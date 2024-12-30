@@ -25,5 +25,4 @@ public class Tweet {
     private String author;
     private LocalDateTime createdAt;
     private List<String> hashtags;
-
 }

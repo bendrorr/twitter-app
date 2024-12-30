@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: twitter-app
+  data:
+    mongodb:
+      database: twitter_app
+      port: 27017
+      host: localhost
