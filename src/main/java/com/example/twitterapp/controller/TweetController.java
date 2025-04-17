@@ -1,7 +1,8 @@
 package com.example.twitterapp.controller;
 
-import com.example.twitterapp.model.Tweet;
+import com.example.twitterapp.dto.TweetDto;
 import com.example.twitterapp.service.TweetService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.bson.Document;
 import org.springframework.http.ResponseEntity;
@@ -19,13 +20,13 @@ public class TweetController {
     private final TweetService tweetService;
 
     @GetMapping
-    public ResponseEntity<List<Tweet>> getAllTweets() {
+    public ResponseEntity<List<TweetDto>> getAllTweets() {
         return new ResponseEntity<>(tweetService.getAllTweets(), OK);
     }
 
     @PostMapping
-    public ResponseEntity<Tweet> createTweet(@RequestBody Tweet tweet) {
-        return new ResponseEntity<>(tweetService.createTweet(tweet), CREATED);
+    public ResponseEntity<TweetDto> createTweet(@RequestBody @Valid TweetDto tweetDto) {
+        return new ResponseEntity<>(tweetService.createTweet(tweetDto), CREATED);
     }
 
     @DeleteMapping("/{id}")
@@ -35,7 +36,7 @@ public class TweetController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Tweet> updateTweet(@PathVariable String id, @RequestBody String newContent) {
+    public ResponseEntity<TweetDto> updateTweet(@PathVariable String id, @RequestBody String newContent) {
         return new ResponseEntity<>(tweetService.updateTweet(id, newContent), OK);
 
     }
@@ -46,14 +47,13 @@ public class TweetController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<List<Tweet>> searchTweets(@RequestParam String keyword) {
+    public ResponseEntity<List<TweetDto>> searchTweets(@RequestParam String keyword) {
         return new ResponseEntity<>(tweetService.searchTweetsByKeyword(keyword), OK);
     }
 
     @GetMapping("/after-date")
-    public ResponseEntity<List<Tweet>> getTweetsAfterDate(@RequestParam String date) {
-        LocalDateTime dateTime = LocalDateTime.parse(date);
-        return new ResponseEntity<>(tweetService.getTweetsAfterDate(dateTime), OK);
+    public ResponseEntity<List<TweetDto>> getTweetsAfterDate(@RequestParam LocalDateTime date) {
+        return new ResponseEntity<>(tweetService.getTweetsAfterDate(date), OK);
     }
 
     @GetMapping("/count-by-author")
@@ -62,7 +62,7 @@ public class TweetController {
     }
 
     @GetMapping("/search-by-hashtag")
-    public ResponseEntity<List<Tweet>> searchByHashtag(@RequestParam String hashtag) {
+    public ResponseEntity<List<TweetDto>> searchByHashtag(@RequestParam String hashtag) {
         return new ResponseEntity<>(tweetService.searchTweetsByHashtag(hashtag), OK);
     }
 

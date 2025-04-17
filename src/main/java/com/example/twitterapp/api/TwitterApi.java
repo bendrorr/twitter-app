@@ -1,6 +1,6 @@
 package com.example.twitterapp.api;
 
-import com.example.twitterapp.model.Tweet;
+import com.example.twitterapp.entity.Tweet;
 import com.example.twitterapp.util.RestAssuredUtils;
 import io.restassured.response.Response;
 import lombok.RequiredArgsConstructor;

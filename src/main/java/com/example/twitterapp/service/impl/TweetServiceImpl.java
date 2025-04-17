@@ -1,6 +1,8 @@
 package com.example.twitterapp.service.impl;
 
-import com.example.twitterapp.model.Tweet;
+import com.example.twitterapp.dto.TweetDto;
+import com.example.twitterapp.entity.Tweet;
+import com.example.twitterapp.mapper.TweetMapper;
 import com.example.twitterapp.repository.TweetRepository;
 import com.example.twitterapp.service.TweetService;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -23,13 +26,16 @@ public class TweetServiceImpl implements TweetService {
 
 
     @Override
-    public List<Tweet> getAllTweets() {
-        return tweetRepository.findAll();
+    public List<TweetDto> getAllTweets() {
+        return tweetRepository.findAll().stream()
+                .map(TweetMapper::toDto)
+                .collect(Collectors.toList());
     }
 
     @Override
-    public Tweet createTweet(Tweet tweet) {
-        return tweetRepository.save(tweet);
+    public TweetDto createTweet(TweetDto tweetDto) {
+        Tweet tweetEntity = TweetMapper.toEntity(tweetDto);
+        return TweetMapper.toDto(tweetRepository.save(tweetEntity));
     }
 
     @Override
@@ -38,11 +44,11 @@ public class TweetServiceImpl implements TweetService {
     }
 
     @Override
-    public Tweet updateTweet(String id, String newContent) {
+    public TweetDto updateTweet(String id, String newContent) {
         Tweet existingTweet = tweetRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Tweet not found with id: " + id));
         existingTweet.setContent(newContent);
-        return tweetRepository.save(existingTweet);
+        return TweetMapper.toDto(tweetRepository.save(existingTweet));
     }
 
     @Override
@@ -56,17 +62,21 @@ public class TweetServiceImpl implements TweetService {
     }
 
     @Override
-    public List<Tweet> searchTweetsByKeyword(String keyword) {
+    public List<TweetDto> searchTweetsByKeyword(String keyword) {
         Query query = new Query()
                 .addCriteria(Criteria.where("content").regex(keyword, "i"));
-        return mongoTemplate.find(query, Tweet.class);
+        return mongoTemplate.find(query, Tweet.class).stream()
+                .map(TweetMapper::toDto)
+                .collect(Collectors.toList());
     }
 
     @Override
-    public List<Tweet> getTweetsAfterDate(LocalDateTime dateTime) {
+    public List<TweetDto> getTweetsAfterDate(LocalDateTime dateTime) {
         Query query = new Query()
                 .addCriteria(Criteria.where("createdAt").gte(dateTime));
-        return mongoTemplate.find(query, Tweet.class);
+        return mongoTemplate.find(query, Tweet.class).stream()
+                .map(TweetMapper::toDto)
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -79,10 +89,12 @@ public class TweetServiceImpl implements TweetService {
     }
 
     @Override
-    public List<Tweet> searchTweetsByHashtag(String hashtag) {
+    public List<TweetDto> searchTweetsByHashtag(String hashtag) {
         Query query = new Query()
                 .addCriteria(Criteria.where("hashtags").is(hashtag));
-        return mongoTemplate.find(query, Tweet.class);
+        return mongoTemplate.find(query, Tweet.class).stream()
+                .map(TweetMapper::toDto)
+                .collect(Collectors.toList());
     }
 
     @Override

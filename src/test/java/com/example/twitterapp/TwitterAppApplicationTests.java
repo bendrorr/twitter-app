@@ -2,7 +2,7 @@ package com.example.twitterapp;
 
 import com.example.twitterapp.api.TwitterApi;
 import com.example.twitterapp.config.AppConfig;
-import com.example.twitterapp.model.Tweet;
+import com.example.twitterapp.entity.Tweet;
 import com.example.twitterapp.repository.TweetRepository;
 import com.example.twitterapp.util.JsonUtil;
 import com.example.twitterapp.util.NullUtil;

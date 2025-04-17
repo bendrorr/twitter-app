@@ -1,6 +1,6 @@
 package com.example.twitterapp.config;
 
-import com.example.twitterapp.model.Tweet;
+import com.example.twitterapp.entity.Tweet;
 import com.example.twitterapp.repository.TweetRepository;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;

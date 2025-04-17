@@ -1,7 +1,7 @@
 package com.example.twitterapp.util;
 
 import com.example.twitterapp.api.TwitterApi;
-import com.example.twitterapp.model.Tweet;
+import com.example.twitterapp.entity.Tweet;
 import com.example.twitterapp.repository.TweetRepository;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.restassured.response.Response;
